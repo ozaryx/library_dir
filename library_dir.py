@@ -10,12 +10,14 @@ def read_library_description(library_dir):
     этого файла. Если файла нет или его невозможно прочитать, возвращает пустую строку."""
 
     desc_file = os.path.join(library_dir, 'description.txt')
-    content = ''
+    content = []
     try:
         with open(desc_file, 'r', encoding='utf-8') as f:
-            content = [line.replace('\n', '') for line in f]
-    except Exception as e:
-        pass
+            content = [line for line in f]
+    except FileNotFoundError:
+        return ''
+    except PermissionError:
+        return ''
     finally:
         return content
 
@@ -34,9 +36,10 @@ def get_book_files(library_dir):
             if os.path.isfile(os.path.join(library_dir, f)):
                 if f.endswith('.txt') and f != 'description.txt':
                     books_list.append(f)
-    except Exception as e:
-        # print('Error', e)
-        pass
+    except FileNotFoundError:
+        return ''
+    except PermissionError:
+        return ''
     finally:
         return books_list
 
@@ -59,9 +62,10 @@ def read_book_info(library_dir, book_file):
             author = f.readline().replace('\n', '').strip('. ')
             title = f.readline().replace('\n', '').strip(' ')
             annotation = f.readline().replace('\n', '').strip(' ')
-    except Exception as e:
-        # print('Error is:', e)
-        pass
+    except FileNotFoundError:
+        return ''
+    except PermissionError:
+        return ''
     finally:
         return (author, title, annotation)
 

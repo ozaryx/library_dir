@@ -4,11 +4,13 @@ library = 'library'
 
 # Получить описание библиотеки
 content = ld.read_library_description(library)
-print(content, '\n')
+for line in content:
+    print(line, end='')
 
 # Получить список книг (файлов)
 book_list = ld.get_book_files(library)
-print(book_list, '\n')
+for line in book_list:
+    print(line)
 
 # Получить информацию о книге
 book_file = 'O_narodnom_vospitanii.txt'
