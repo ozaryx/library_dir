@@ -6,14 +6,14 @@ def read_library_description(library_dir):
     Формат функции:
     read_library_description(library_dir)
 
-    Функция находит в папке с библиотекой файл description.txt и возвращает содержание 
+    Функция находит в папке с библиотекой файл description.txt и возвращает содержание
     этого файла. Если файла нет или его невозможно прочитать, возвращает пустую строку."""
 
     desc_file = os.path.join(library_dir, 'description.txt')
     content = []
     try:
         with open(desc_file, 'r', encoding='utf-8') as f:
-            content = [line for line in f]
+            content = [line.strip() for line in f]
     except FileNotFoundError:
         return ''
     except PermissionError:
@@ -29,13 +29,14 @@ def get_book_files(library_dir):
     get_book_files(library_dir):
 
     Функция возвращает список имён файлов книг в указанной папке."""
-    
+
     books_list = []
     try:
-        for f in os.listdir(library_dir):
-            if os.path.isfile(os.path.join(library_dir, f)):
-                if f.endswith('.txt') and f != 'description.txt':
-                    books_list.append(f)
+        with os.scandir(library_dir) as entries:
+            for f in entries:
+                if os.path.isfile(os.path.join(library_dir, f.name)):
+                    if f.name.endswith('.txt') and f.name != 'description.txt':
+                        books_list.append(f.name)
     except FileNotFoundError:
         return ''
     except PermissionError:
@@ -75,9 +76,9 @@ def get_authors(library_dir):
     Формат функции:
     get_authors(library_dir)
 
-    Функция возвращает список имён авторов, книги которых есть в библиотеке. 
-    Имена в списке не должны повторяться, конечно. Для этого придётся пройти по списку 
-    файлов книг и прочитать имя автора из каждой книги. Например, для имеющегося в 
+    Функция возвращает список имён авторов, книги которых есть в библиотеке.
+    Имена в списке не должны повторяться, конечно. Для этого придётся пройти по списку
+    файлов книг и прочитать имя автора из каждой книги. Например, для имеющегося в
     наличии примера результат должен быть такой:
 
     ["Александр Сергеевич Пушкин", "Николай Васильевич Гоголь"]"""
@@ -96,10 +97,10 @@ def get_all_books_info(library_dir):
     Формат функции:
     get_all_books_info(library_dir)
 
-    Эта функция возвращает список книг в данной папке, причём каждая книга представлена 
-    в виде кортежа (автор, название, аннотация, имя файла). То есть она объединяет 
+    Эта функция возвращает список книг в данной папке, причём каждая книга представлена
+    в виде кортежа (автор, название, аннотация, имя файла). То есть она объединяет
     работу функций get_book_files и read_book_info."""
-    
+
     books_info = []
     books_list = get_book_files(library_dir)
     for book in books_list:

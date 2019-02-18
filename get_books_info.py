@@ -5,7 +5,7 @@ library = 'library'
 # Получить описание библиотеки
 content = ld.read_library_description(library)
 for line in content:
-    print(line, end='')
+    print(line)
 
 # Получить список книг (файлов)
 book_list = ld.get_book_files(library)
