@@ -1,5 +1,6 @@
 import os
 
+
 def read_library_description(library_dir):
     """Поиск и чтение файла description.txt
 
@@ -69,6 +70,7 @@ def read_book_info(library_dir, book_file):
         return ''
     finally:
         return (author, title, annotation)
+
 
 def get_authors(library_dir):
     """Возвращает список имён авторов, книги которых есть в библиотеке.
